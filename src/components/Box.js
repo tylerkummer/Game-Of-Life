@@ -1,5 +1,5 @@
 import React from "react";
-import "../App.css";
+import "./Universal.css";
 
 const Box = (props) => {
   const selectBox = () => {

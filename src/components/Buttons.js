@@ -1,6 +1,6 @@
 import React from "react";
 import { ButtonToolbar, MenuItem, DropdownButton } from "react-bootstrap";
-import "../App.css";
+import "./Universal.css";
 
 const Buttons = (props) => {
   const handleSelect = (eventKey) => {

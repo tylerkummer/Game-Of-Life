@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "./Box";
-import "../App.css";
+import "./Universal.css";
 
 const Grid = (props) => {
   const width = props.cols * 14;

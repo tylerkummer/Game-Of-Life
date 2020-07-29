@@ -1,7 +1,7 @@
 import React from "react";
-import "./App.css";
-import Grid from "./components/Grid";
-import Buttons from "./components/Buttons";
+import "./Universal.css";
+import Grid from "./Grid";
+import Buttons from "./Buttons";
 
 const arrayClone = (arr) => {
   return JSON.parse(JSON.stringify(arr));
