@@ -1,85 +1,10 @@
 import React from "react";
-import { ButtonToolbar, MenuItem, DropdownButton } from "react-bootstrap";
 import "./App.css";
+import Grid from "./components/Grid";
+import Buttons from "./components/Buttons";
 
 const arrayClone = (arr) => {
   return JSON.parse(JSON.stringify(arr));
-};
-
-const Box = (props) => {
-  const selectBox = () => {
-    props.selectBox(props.row, props.col);
-  };
-
-  return <div className={props.boxClass} id={props.id} onClick={selectBox} />;
-};
-
-const Grid = (props) => {
-  const width = props.cols * 14;
-  let boxClass = "";
-  const rowsArr = props.gridFull.map((rowArr, rowIdx) =>
-    rowArr.map((item, colIdx) => {
-      const boxId = `${rowIdx}_${colIdx}`;
-
-      boxClass = props.gridFull[rowIdx][colIdx] ? "box on" : "box off";
-      return (
-        <Box
-          boxClass={boxClass}
-          key={boxId}
-          boxId={boxId}
-          row={rowIdx}
-          col={colIdx}
-          selectBox={props.selectBox}
-        />
-      );
-    })
-  );
-
-  return (
-    <div className="grid" style={{ width }}>
-      {rowsArr}
-    </div>
-  );
-};
-
-const Buttons = (props) => {
-  const handleSelect = (eventKey) => {
-    props.gridSize(eventKey);
-  };
-
-  return (
-    <div className="center">
-      <ButtonToolbar>
-        <button className="btn btn-default" onClick={props.playButton}>
-          Play
-        </button>
-        <button className="btn btn-default" onClick={props.pauseButton}>
-          Stop
-        </button>
-        <button className="btn btn-default" onClick={props.clear}>
-          Clear
-        </button>
-        <button className="btn btn-default" onClick={props.slow}>
-          Slow
-        </button>
-        <button className="btn btn-default" onClick={props.fast}>
-          Fast
-        </button>
-        <button className="btn btn-default" onClick={props.random}>
-          Random
-        </button>
-        <DropdownButton
-          title="Grid Size"
-          id="size-menu"
-          onSelect={handleSelect}
-        >
-          <MenuItem eventKey="1">20x10</MenuItem>
-          <MenuItem eventKey="2">50x30</MenuItem>
-          <MenuItem eventKey="3">70x50</MenuItem>
-        </DropdownButton>
-      </ButtonToolbar>
-    </div>
-  );
 };
 
 class App extends React.Component {
@@ -194,6 +119,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>The Game of Life</h1>
+        <h2>Generations: {this.state.generation}</h2>
         <Buttons
           playButton={this.playButton}
           pauseButton={this.pauseButton}
@@ -209,7 +135,6 @@ class App extends React.Component {
           cols={this.cols}
           selectBox={this.selectBox}
         />
-        <h2>Generations: {this.state.generation}</h2>
       </div>
     );
   }
