@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Universal.css";
 import Grid from "./Grid";
 import Buttons from "./Buttons";
@@ -7,12 +7,13 @@ const arrayClone = (arr) => {
   return JSON.parse(JSON.stringify(arr));
 };
 
+// Class Components
 class App extends React.Component {
   constructor() {
     super();
     this.speed = 100;
-    this.rows = 30;
-    this.cols = 50;
+    this.rows = 25;
+    this.cols = 25;
 
     this.state = {
       generation: 0,
@@ -76,16 +77,16 @@ class App extends React.Component {
   gridSize = (size) => {
     switch (size) {
       case "1":
-        this.cols = 20;
-        this.rows = 10;
+        this.cols = 25;
+        this.rows = 25;
         break;
       case "2":
         this.cols = 50;
-        this.rows = 30;
+        this.rows = 50;
         break;
       default:
-        this.cols = 70;
-        this.rows = 50;
+        this.cols = 75;
+        this.rows = 75;
     }
     this.clear();
   };
@@ -139,5 +140,128 @@ class App extends React.Component {
     );
   }
 }
+
+// Function Components
+// const App = () => {
+//   let speed = 100;
+//   let rows = 25;
+//   let cols = 25;
+
+//   const [generation, setGeneration] = useState(0);
+//   const [gridFull, setGridFull] = useState(
+//     Array(rows)
+//       .fill()
+//       .map(() => Array(cols).fill(false))
+//   );
+
+//   useEffect(() => {
+//     setInterval(() => {
+//       random();
+//       playButton();
+//     }, []);
+//   });
+
+//   const selectBox = (row, col) => {
+//     const gridFull = gridFull.map((rowArr, rowIdx) =>
+//       rowArr.map((item, colIdx) =>
+//         rowIdx === row && colIdx === col ? !item : item
+//       )
+//     );
+//     setGridFull(gridFull);
+//   };
+
+//   const random = () => {
+//     const gridFull = gridFull.map((rowArr) =>
+//       rowArr.map(() => Math.floor(Math.random() * 4) === 1)
+//     );
+//     setGridFull(gridFull);
+//   };
+
+//   const playButton = () => {
+//     clearInterval(intervalId);
+//     let intervalId = setInterval(play, speed);
+//   };
+
+//   const pauseButton = () => {
+//     clearInterval(intervalId);
+//   };
+
+//   const slow = () => {
+//     speed = 1000;
+//     playButton();
+//   };
+
+//   const fast = () => {
+//     speed = 100;
+//     playButton();
+//   };
+
+//   const clear = () => {
+//     const gridFull = Array(rows)
+//       .fill()
+//       .map(() => Array(cols).fill(false));
+
+//     setGridFull(gridFull);
+//     setGeneration(0);
+//   };
+
+//   const gridSize = (size) => {
+//     switch (size) {
+//       case "1":
+//         cols = 25;
+//         rows = 25;
+//         break;
+//       case "2":
+//         cols = 50;
+//         rows = 50;
+//         break;
+//       default:
+//         cols = 75;
+//         rows = 75;
+//     }
+//     clear();
+//   };
+
+//   const play = () => {
+//     let g = gridFull;
+//     let g2 = arrayClone(gridFull);
+
+//     for (let i = 0; i < rows; i++) {
+//       for (let j = 0; j < cols; j++) {
+//         let count = 0;
+//         if (i > 0) if (g[i - 1][j]) count++;
+//         if (i > 0 && j > 0) if (g[i - 1][j - 1]) count++;
+//         if (i > 0 && j < cols - 1) if (g[i - 1][j + 1]) count++;
+//         if (j < cols - 1) if (g[i][j + 1]) count++;
+//         if (j > 0) if (g[i][j - 1]) count++;
+//         if (i < rows - 1) if (g[i + 1][j]) count++;
+//         if (i < rows - 1 && j > 0) if (g[i + 1][j - 1]) count++;
+//         if (i < rows - 1 && cols - 1) if (g[i + 1][j + 1]) count++;
+//         if (g[i][j] && (count < 2 || count > 3)) g2[i][j] = false;
+//         if (!g[i][j] && count === 3) g2[i][j] = true;
+//       }
+//     }
+
+//     setGridFull(g2);
+//     setGeneration(generation + 1);
+//   };
+
+//   return (
+//     <div>
+//       <h1>The Game of Life</h1>
+//       <h2>Generations: {generation}</h2>
+//       <Buttons
+//         playButton={playButton}
+//         pauseButton={pauseButton}
+//         slow={slow}
+//         fast={fast}
+//         clear={clear}
+//         random={random}
+//         gridSize={gridSize}
+//       />
+//       <Grid gridFull={gridFull} rows={rows} cols={cols} selectBox={selectBox} />
+//     </div>
+//   );
+// };
 
 export default App;

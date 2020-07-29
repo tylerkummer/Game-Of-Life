@@ -33,9 +33,9 @@ const Buttons = (props) => {
           id="size-menu"
           onSelect={handleSelect}
         >
-          <MenuItem eventKey="1">20x10</MenuItem>
-          <MenuItem eventKey="2">50x30</MenuItem>
-          <MenuItem eventKey="3">70x50</MenuItem>
+          <MenuItem eventKey="1">25x25</MenuItem>
+          <MenuItem eventKey="2">50x50</MenuItem>
+          <MenuItem eventKey="3">75x75</MenuItem>
         </DropdownButton>
       </ButtonToolbar>
     </div>
