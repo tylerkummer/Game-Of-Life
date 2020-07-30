@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import "./Universal.css";
 import Grid from "./Grid";
 import Buttons from "./Buttons";
+import Rules from "./Rules";
 
+// Class Components
 const arrayClone = (arr) => {
   return JSON.parse(JSON.stringify(arr));
 };
 
-// Class Components
 class App extends React.Component {
   constructor() {
     super();
     this.speed = 100;
     this.rows = 25;
     this.cols = 25;
-
     this.state = {
       generation: 0,
       gridFull: Array(this.rows)
@@ -58,8 +58,13 @@ class App extends React.Component {
     this.playButton();
   };
 
-  fast = () => {
+  normal = () => {
     this.speed = 100;
+    this.playButton();
+  };
+
+  fast = () => {
+    this.speed = 50;
     this.playButton();
   };
 
@@ -125,6 +130,7 @@ class App extends React.Component {
           playButton={this.playButton}
           pauseButton={this.pauseButton}
           slow={this.slow}
+          normal={this.normal}
           fast={this.fast}
           clear={this.clear}
           random={this.random}
@@ -136,71 +142,88 @@ class App extends React.Component {
           cols={this.cols}
           selectBox={this.selectBox}
         />
+        <Rules />
       </div>
     );
   }
 }
 
-// Function Components
+// Functional Components
 // const App = () => {
-//   let speed = 100;
-//   let rows = 25;
-//   let cols = 25;
+//   const arrayClone = (arr) => {
+//     return JSON.parse(JSON.stringify(arr));
+//   };
 
+//   const [speed, setSpeed] = useState(100);
+//   const [rows, setRows] = useState(25);
+//   const [cols, setCols] = useState(25);
+//   const [run, setRun] = useState(true);
 //   const [generation, setGeneration] = useState(0);
+
 //   const [gridFull, setGridFull] = useState(
 //     Array(rows)
 //       .fill()
 //       .map(() => Array(cols).fill(false))
 //   );
 
-//   useEffect(() => {
-//     setInterval(() => {
-//       random();
-//       playButton();
-//     }, []);
-//   });
+//   const rowsRef = useRef(rows);
+//   const colsRef = useRef(cols);
+//   const genCount = useRef(generation);
+//   const gridRef = useRef(gridFull);
+//   const runRef = useRef(run);
+//   const speedRef = useRef(speed);
+
+//   gridRef.current = gridFull;
+//   genCount.current = generation;
+//   rowsRef.current = rows;
+//   colsRef.current = cols;
+//   runRef.current = run;
+//   speedRef.current = speed;
 
 //   const selectBox = (row, col) => {
-//     const gridFull = gridFull.map((rowArr, rowIdx) =>
-//       rowArr.map((item, colIdx) =>
-//         rowIdx === row && colIdx === col ? !item : item
+//     setGridFull(
+//       gridFull.map((rowArr, rowIdx) =>
+//         rowArr.map((item, colIdx) =>
+//           rowIdx === row && colIdx === col ? !item : item
+//         )
 //       )
 //     );
-//     setGridFull(gridFull);
 //   };
 
 //   const random = () => {
-//     const gridFull = gridFull.map((rowArr) =>
-//       rowArr.map(() => Math.floor(Math.random() * 4) === 1)
+//     setGridFull(
+//       gridFull.map((rowArr) =>
+//         rowArr.map(() => Math.floor(Math.random() * 4) === 1)
+//       )
 //     );
-//     setGridFull(gridFull);
 //   };
 
 //   const playButton = () => {
-//     clearInterval(intervalId);
-//     let intervalId = setInterval(play, speed);
+//     setRun(true);
+//     runRef.current = true;
+//     play();
 //   };
 
 //   const pauseButton = () => {
-//     clearInterval(intervalId);
+//     setRun(false);
 //   };
 
 //   const slow = () => {
-//     speed = 1000;
-//     playButton();
+//     setSpeed(1000);
+//   };
+
+//   const normal = () => {
+//     setSpeed(100);
 //   };
 
 //   const fast = () => {
-//     speed = 100;
-//     playButton();
+//     setSpeed(50);
 //   };
 
 //   const clear = () => {
 //     const gridFull = Array(rows)
 //       .fill()
 //       .map(() => Array(cols).fill(false));
-
 //     setGridFull(gridFull);
 //     setGeneration(0);
 //   };
@@ -208,51 +231,55 @@ class App extends React.Component {
 //   const gridSize = (size) => {
 //     switch (size) {
 //       case "1":
-//         cols = 25;
-//         rows = 25;
+//         setCols(25);
+//         setRows(25);
 //         break;
 //       case "2":
-//         cols = 50;
-//         rows = 50;
+//         setCols(50);
+//         setRows(50);
 //         break;
 //       default:
-//         cols = 75;
-//         rows = 75;
+//         setCols(75);
+//         setRows(75);
 //     }
 //     clear();
 //   };
 
-//   const play = () => {
-//     let g = gridFull;
-//     let g2 = arrayClone(gridFull);
-
-//     for (let i = 0; i < rows; i++) {
-//       for (let j = 0; j < cols; j++) {
-//         let count = 0;
-//         if (i > 0) if (g[i - 1][j]) count++;
-//         if (i > 0 && j > 0) if (g[i - 1][j - 1]) count++;
-//         if (i > 0 && j < cols - 1) if (g[i - 1][j + 1]) count++;
-//         if (j < cols - 1) if (g[i][j + 1]) count++;
-//         if (j > 0) if (g[i][j - 1]) count++;
-//         if (i < rows - 1) if (g[i + 1][j]) count++;
-//         if (i < rows - 1 && j > 0) if (g[i + 1][j - 1]) count++;
-//         if (i < rows - 1 && cols - 1) if (g[i + 1][j + 1]) count++;
-//         if (g[i][j] && (count < 2 || count > 3)) g2[i][j] = false;
-//         if (!g[i][j] && count === 3) g2[i][j] = true;
+//   const play = useCallback(() => {
+//     if (runRef.current) {
+//       let g = gridRef.current;
+//       let g2 = arrayClone(gridRef.current);
+//       for (let i = 0; i < rowsRef.current; i++) {
+//         for (let j = 0; j < colsRef.current; j++) {
+//           let count = 0;
+//           if (i > 0) if (g[i - 1][j]) count++;
+//           if (i > 0 && j > 0) if (g[i - 1][j - 1]) count++;
+//           if (i > 0 && j < cols - 1) if (g[i - 1][j + 1]) count++;
+//           if (j < cols - 1) if (g[i][j + 1]) count++;
+//           if (j > 0) if (g[i][j - 1]) count++;
+//           if (i < rows - 1) if (g[i + 1][j]) count++;
+//           if (i < rows - 1 && j > 0) if (g[i + 1][j - 1]) count++;
+//           if (i < rows - 1 && cols - 1) if (g[i + 1][j + 1]) count++;
+//           if (g[i][j] && (count < 2 || count > 3)) g2[i][j] = false;
+//           if (!g[i][j] && count === 3) g2[i][j] = true;
+//         }
 //       }
+//       setGridFull(g2);
+//       setGeneration(genCount.current + 1);
+//       setTimeout(play, speedRef.current);
+//     } else {
+//       return;
 //     }
-
-//     setGridFull(g2);
-//     setGeneration(generation + 1);
-//   };
+//   });
 
 //   return (
-//     <div>
+//     <div className="App">
 //       <h1>The Game of Life</h1>
 //       <h2>Generations: {generation}</h2>
 //       <Buttons
 //         playButton={playButton}
 //         pauseButton={pauseButton}
+//         normal={normal}
 //         slow={slow}
 //         fast={fast}
 //         clear={clear}
@@ -260,6 +287,7 @@ class App extends React.Component {
 //         gridSize={gridSize}
 //       />
 //       <Grid gridFull={gridFull} rows={rows} cols={cols} selectBox={selectBox} />
+//       <Rules />
 //     </div>
 //   );
 // };

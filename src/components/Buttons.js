@@ -10,22 +10,25 @@ const Buttons = (props) => {
   return (
     <div className="center">
       <ButtonToolbar>
-        <button className="btn btn-default" onClick={props.playButton}>
+        <button className="btn btn-default" onClick={() => props.playButton()}>
           Play
         </button>
-        <button className="btn btn-default" onClick={props.pauseButton}>
+        <button className="btn btn-default" onClick={() => props.pauseButton()}>
           Stop
         </button>
-        <button className="btn btn-default" onClick={props.clear}>
+        <button className="btn btn-default" onClick={() => props.clear()}>
           Clear
         </button>
-        <button className="btn btn-default" onClick={props.slow}>
+        <button className="btn btn-default" onClick={() => props.slow()}>
           Slow
         </button>
-        <button className="btn btn-default" onClick={props.fast}>
+        <button className="btn btn-default" onClick={() => props.normal()}>
+          Normal
+        </button>
+        <button className="btn btn-default" onClick={() => props.fast()}>
           Fast
         </button>
-        <button className="btn btn-default" onClick={props.random}>
+        <button className="btn btn-default" onClick={() => props.random()}>
           Random
         </button>
         <DropdownButton
